@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "@tanstack/react-router";
 import { discipleService } from "@/integrations/supabase/services/discipleService";
 import { meetingService } from "@/integrations/supabase/services/meetingService";
 import { followupService } from "@/integrations/supabase/services/followupService";
@@ -22,7 +22,7 @@ import { ArrowLeft, Calendar, ListChecks, Award, Plus, Loader2, Check } from "lu
 import { toast } from "sonner";
 
 export default function DiscipleProfile() {
-  const { id = "" } = useParams();
+  const { id = "" } = useParams({ strict: false }) as { id?: string };
   const [rel, setRel] = useState<DiscipleshipRelationship | null>(null);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [followups, setFollowups] = useState<FollowUp[]>([]);

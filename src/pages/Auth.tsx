@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearch } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 export default function Auth() {
-  const [params] = useSearchParams();
-  const initialMode = params.get("mode") === "register" ? "register" : "login";
+  const search = useSearch({ strict: false }) as { mode?: string };
+  const initialMode = search?.mode === "register" ? "register" : "login";
   const [mode, setMode] = useState<"login" | "register">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,12 +32,12 @@ export default function Auth() {
         const { error } = await authService.signUp(email, password, displayName || email.split("@")[0]);
         if (error) throw error;
         toast.success("Account created. Welcome.");
-        navigate("/app");
+        await navigate({ to: "/app" });
       } else {
         const { error } = await authService.signIn(email, password);
         if (error) throw error;
         toast.success("Welcome back.");
-        navigate("/app");
+        await navigate({ to: "/app" });
       }
     } catch (e: any) {
       toast.error(e?.message ?? "Something went wrong");

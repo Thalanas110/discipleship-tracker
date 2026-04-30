@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 import { discipleService } from "@/integrations/supabase/services/discipleService";
 import { profileService } from "@/integrations/supabase/services/profileService";

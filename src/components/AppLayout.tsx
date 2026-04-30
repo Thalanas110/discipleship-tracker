@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -34,22 +34,22 @@ function SidebarContent({ onNav }: { onNav?: () => void }) {
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {NAV.filter(n => !n.roles || hasAnyRole([...n.roles])).map((item) => (
-          <NavLink
+          <Link
             key={item.to}
             to={item.to}
-            end={item.end}
+            activeOptions={{ exact: !!item.end }}
             onClick={onNav}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
-                isActive
-                  ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-soft"
-                  : "hover:bg-sidebar-accent text-sidebar-foreground"
-              }`
-            }
+            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors"
+            activeProps={{
+              className: "bg-sidebar-primary text-sidebar-primary-foreground font-medium shadow-soft",
+            }}
+            inactiveProps={{
+              className: "hover:bg-sidebar-accent text-sidebar-foreground",
+            }}
           >
             <item.icon className="h-4 w-4" />
             {item.label}
-          </NavLink>
+          </Link>
         ))}
       </nav>
       <div className="border-t border-sidebar-border p-4">
@@ -68,7 +68,7 @@ function SidebarContent({ onNav }: { onNav?: () => void }) {
           variant="outline"
           size="sm"
           className="w-full"
-          onClick={async () => { await signOut(); navigate("/auth"); }}
+          onClick={async () => { await signOut(); await navigate({ to: "/auth" }); }}
         >
           <LogOut className="h-4 w-4 mr-2" /> Sign out
         </Button>

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { PageHeader, EmptyState } from "@/components/PageHeader";
 import { stageBadgeClass } from "@/utils/format";
 import { STAGE_LABEL } from "@/types";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { AlertTriangle, Users, Calendar, ListChecks, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
