@@ -1,0 +1,3 @@
+# Soma
+
+Discipleship tracking application.
