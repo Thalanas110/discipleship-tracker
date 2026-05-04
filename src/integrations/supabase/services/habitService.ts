@@ -24,6 +24,17 @@ export const habitService = {
     if (error) throw error;
     return (data as HabitCheckin[]) ?? [];
   },
+  async listRecentCheckinsForHabits(habitIds: string[], limit = 240): Promise<HabitCheckin[]> {
+    if (!habitIds.length) return [];
+    const { data, error } = await supabase
+      .from("habit_checkins")
+      .select("*")
+      .in("habit_id", habitIds)
+      .order("checkin_date", { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data as HabitCheckin[]) ?? [];
+  },
   async create(input: { name: string; type?: string; frequency?: HabitFrequency }) {
     return invoke<Habit>("habit-create", input);
   },

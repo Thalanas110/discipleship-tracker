@@ -6,6 +6,8 @@ export type FollowupStatus = 'pending' | 'completed' | 'missed' | 'cancelled';
 export type NoteVisibility = 'private' | 'leader_only' | 'pastor_visible';
 export type PrayerVisibility = 'private' | 'leader_only' | 'public';
 export type HabitFrequency = 'daily' | 'weekly' | 'monthly';
+export type PracticeType = 'scripture' | 'prayer' | 'service' | 'fellowship' | 'witness' | 'other';
+export type DiscipleshipStageName = 'rooted' | 'growing' | 'serving' | 'multiplying';
 
 export interface Profile {
   id: string;
@@ -84,6 +86,125 @@ export interface HabitCheckin {
   checkin_date: string;
   note: string | null;
   created_at: string;
+}
+
+export interface JourneyState {
+  stage: DiscipleshipStageName;
+  level: number;
+  totalXp: number;
+  currentLevelXp: number;
+  nextLevelXp: number;
+  progressPercent: number;
+  streakDays: number;
+  streakPaused: boolean;
+}
+
+export interface GardenState {
+  roots: number;
+  branches: number;
+  fruit: number;
+  flowers: number;
+  light: number;
+  overallHealth: number;
+  seasonBloom: boolean;
+}
+
+export interface GuildMissionState {
+  title: string;
+  objective: string;
+  progress: number;
+  target: number;
+  reward: string;
+  weeklyWindowStart: string;
+}
+
+export interface DailyCallingCard {
+  habitId: string;
+  habitName: string;
+  practiceType: PracticeType;
+  prompt: string;
+  completedToday: boolean;
+}
+
+export interface GamificationSnapshot {
+  journey: JourneyState;
+  garden: GardenState;
+  guild: GuildMissionState;
+  todayXp: number;
+  weeklyConsistency: number;
+  totalXp: number;
+}
+
+export interface GuildSeason {
+  id: string;
+  name: string;
+  starts_on: string;
+  ends_on: string;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GuildMission {
+  id: string;
+  season_id: string;
+  title: string;
+  objective: string;
+  target_count: number;
+  reward: string;
+  week_start: string;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GuildMissionContribution {
+  id: string;
+  mission_id: string;
+  user_id: string;
+  group_id: string | null;
+  contribution_date: string;
+  story: string | null;
+  created_at: string;
+}
+
+export interface UserAchievement {
+  id: string;
+  user_id: string;
+  season_id: string | null;
+  code: string;
+  title: string;
+  description: string | null;
+  awarded_at: string;
+  metadata: Record<string, unknown>;
+}
+
+export interface GuildLeaderboardEntry {
+  season_id: string;
+  group_id: string;
+  group_name: string;
+  contribution_count: number;
+  story_count: number;
+  active_days: number;
+  mission_diversity: number;
+  base_points: number;
+  adjusted_points: number;
+  final_points: number;
+  rank: number;
+}
+
+export interface GuildLeaderboardGroupSetting {
+  id: string;
+  season_id: string;
+  group_id: string;
+  is_visible: boolean;
+  adjusted_points: number;
+  moderation_note: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface PrayerRequest {

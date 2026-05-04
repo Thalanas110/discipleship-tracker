@@ -135,6 +135,185 @@ export type Database = {
           },
         ]
       }
+      guild_leaderboard_group_settings: {
+        Row: {
+          adjusted_points: number
+          created_at: string
+          group_id: string
+          id: string
+          is_visible: boolean
+          moderation_note: string | null
+          season_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          adjusted_points?: number
+          created_at?: string
+          group_id: string
+          id?: string
+          is_visible?: boolean
+          moderation_note?: string | null
+          season_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          adjusted_points?: number
+          created_at?: string
+          group_id?: string
+          id?: string
+          is_visible?: boolean
+          moderation_note?: string | null
+          season_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guild_leaderboard_group_settings_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guild_leaderboard_group_settings_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "guild_seasons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guild_mission_contributions: {
+        Row: {
+          contribution_date: string
+          created_at: string
+          group_id: string | null
+          id: string
+          mission_id: string
+          story: string | null
+          user_id: string
+        }
+        Insert: {
+          contribution_date?: string
+          created_at?: string
+          group_id?: string | null
+          id?: string
+          mission_id: string
+          story?: string | null
+          user_id: string
+        }
+        Update: {
+          contribution_date?: string
+          created_at?: string
+          group_id?: string | null
+          id?: string
+          mission_id?: string
+          story?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guild_mission_contributions_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guild_mission_contributions_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "guild_missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guild_missions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          objective: string
+          reward: string
+          season_id: string
+          target_count: number
+          title: string
+          updated_at: string
+          week_start: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          objective: string
+          reward?: string
+          season_id: string
+          target_count?: number
+          title: string
+          updated_at?: string
+          week_start?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          objective?: string
+          reward?: string
+          season_id?: string
+          target_count?: number
+          title?: string
+          updated_at?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guild_missions_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "guild_seasons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guild_seasons: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          ends_on: string
+          id: string
+          is_active: boolean
+          name: string
+          starts_on: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          ends_on: string
+          id?: string
+          is_active?: boolean
+          name: string
+          starts_on: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          ends_on?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          starts_on?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       group_members: {
         Row: {
           created_at: string
@@ -617,11 +796,83 @@ export type Database = {
         }
         Relationships: []
       }
+      user_achievements: {
+        Row: {
+          awarded_at: string
+          code: string
+          description: string | null
+          id: string
+          metadata: Json
+          season_id: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          code: string
+          description?: string | null
+          id?: string
+          metadata?: Json
+          season_id?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          code?: string
+          description?: string | null
+          id?: string
+          metadata?: Json
+          season_id?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_season_id_fkey"
+            columns: ["season_id"]
+            isOneToOne: false
+            referencedRelation: "guild_seasons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      guild_leaderboard_entries: {
+        Row: {
+          active_days: number | null
+          adjusted_points: number | null
+          base_points: number | null
+          contribution_count: number | null
+          final_points: number | null
+          group_id: string | null
+          group_name: string | null
+          mission_diversity: number | null
+          rank: number | null
+          season_id: string | null
+          story_count: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      get_guild_leaderboard: {
+        Args: { _limit?: number; _season_id: string }
+        Returns: {
+          active_days: number
+          adjusted_points: number
+          base_points: number
+          contribution_count: number
+          final_points: number
+          group_id: string
+          group_name: string
+          mission_diversity: number
+          rank: number
+          season_id: string
+          story_count: number
+        }[]
+      }
       has_any_role: {
         Args: {
           _roles: Database["public"]["Enums"]["app_role"][]
